@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
+const moment = require('moment-timezone');
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -241,16 +242,33 @@ app.post('/leave_requests', async (req, res) => {
 // path = POST /check_in ห้าม Check-in ซ้ำถ้ายังไม่ได้ Check-out
 app.post('/check_in', async (req, res) => {
     try {
-        let { employee_id } = req.body;
+        const { employee_id } = req.body;
         const errors = validateCheck_In_Data({ employee_id });
+
+        // ใช้ moment-timezone เพื่อให้แน่ใจว่าเป็นเวลาไทย
+        const thaiDate = moment().tz('Asia/Bangkok').format('YYYY-MM-DD');
+        const thaiTime = moment().tz('Asia/Bangkok').format('HH:mm:ss');
+
         if (errors.length > 0) {
-            throw {
+            return res.status(400).json({
                 message: 'กรุณากรอกรหัสพนักงาน',
                 errors: errors
-            };
+            });
         }
 
-        // ตรวจสอบว่าพนักงานมี Check-in ที่ยังไม่ Check-out หรือไม่
+        console.log("Employee ID ที่ส่งมา:", employee_id);
+
+        //**ตรวจสอบว่าพนักงานมีอยู่จริงหรือไม่**
+        const [employee] = await conn.query(
+            `SELECT employee_id FROM employees WHERE employee_id = ?`,
+            [employee_id]
+        );
+
+        if (employee.length === 0) {
+            return res.status(404).json({ message: 'ไม่พบพนักงานในระบบ' });
+        }
+
+        //**ตรวจสอบว่าพนักงานมี Check-in ที่ยังไม่ Check-out หรือไม่**
         const [existingRecord] = await conn.query(
             `SELECT ar.attendance_id 
              FROM attendance_records ar 
@@ -267,15 +285,16 @@ app.post('/check_in', async (req, res) => {
             });
         }
 
-        // บันทึกเวลา Check-in
+        //**บันทึก Check-in ใหม่**
         const [result] = await conn.query(
-            'INSERT INTO check_in (employee_id, check_in_date, check_in_time) VALUES (?, CURDATE(), CURTIME())',
-            [employee_id]
+            `INSERT INTO check_in (employee_id, check_in_date, check_in_time) 
+            VALUES (?, ?, ?)`,
+            [employee_id, thaiDate, thaiTime]
         );
 
         let check_in_id = result.insertId;
 
-        // บันทึกลง attendance_records
+        // **บันทึกลง attendance_records**
         await conn.query(
             'INSERT INTO attendance_records (employee_id, check_in_id) VALUES (?, ?)',
             [employee_id, check_in_id]
@@ -289,20 +308,41 @@ app.post('/check_in', async (req, res) => {
     }
 });
 
+
+
+
+
 // path = POST /check_out สำหรับสร้าง check_out ใหม่บันทึกเข้าไป
 // path = POST /check_out ห้าม Check-out ถ้ายังไม่ได้ Check-in
 app.post('/check_out', async (req, res) => {
     try {
-        let { employee_id } = req.body;
+        const { employee_id } = req.body;
         const errors = validateCheck_In_Data({ employee_id });
+
+        //ใช้ moment-timezone เพื่อให้แน่ใจว่าเป็นเวลาไทย
+        const thaiDate = moment().tz('Asia/Bangkok').format('YYYY-MM-DD');
+        const thaiTime = moment().tz('Asia/Bangkok').format('HH:mm:ss');
+
         if (errors.length > 0) {
-            throw {
+            return res.status(400).json({
                 message: 'กรุณากรอกรหัสพนักงาน',
                 errors: errors
-            };
+            });
         }
 
-        // ตรวจสอบว่าพนักงานมี Check-in ที่ยังไม่ Check-out หรือไม่
+        console.log("Employee ID ที่ส่งมา:", employee_id);
+
+        //**ตรวจสอบว่าพนักงานมีอยู่จริงหรือไม่**
+        const [employee] = await conn.query(
+            `SELECT employee_id FROM employees WHERE employee_id = ?`,
+            [employee_id]
+        );
+
+        if (employee.length === 0) {
+            return res.status(404).json({ message: 'ไม่พบพนักงานในระบบ' });
+        }
+
+        //**ตรวจสอบว่าพนักงานมี Check-in ที่ยังไม่ Check-out หรือไม่**
         const [checkInRecord] = await conn.query(
             `SELECT ar.attendance_id 
              FROM attendance_records ar 
@@ -319,18 +359,21 @@ app.post('/check_out', async (req, res) => {
             });
         }
 
-        // บันทึกเวลา Check-out
+        const attendance_id = checkInRecord[0].attendance_id;
+
+        //**บันทึกเวลา Check-out**
         const [result] = await conn.query(
-            'INSERT INTO check_out (employee_id, check_out_date, check_out_time) VALUES (?, CURDATE(), CURTIME())',
-            [employee_id]
+            `INSERT INTO check_out (employee_id, check_out_date, check_out_time) 
+            VALUES (?, ?, ?)`,
+            [employee_id, thaiDate, thaiTime]
         );
 
         let check_out_id = result.insertId;
 
-        // อัปเดต attendance_records ด้วย check_out_id
+        //**อัปเดต attendance_records ด้วย check_out_id**
         await conn.query(
             'UPDATE attendance_records SET check_out_id = ? WHERE attendance_id = ?',
-            [check_out_id, checkInRecord[0].attendance_id]
+            [check_out_id, attendance_id]
         );
 
         res.json({ message: 'Check-out success', check_out_id });
@@ -340,6 +383,8 @@ app.post('/check_out', async (req, res) => {
         res.status(500).json({ message: 'Something went wrong', error: error.message });
     }
 });
+
+
 
 // path = PUT /employees/:id สำหรับแก้ไข employee รายคน (ตาม id ที่บันทึกเข้าไป)
 app.put('/employees/:id', async (req, res) => {
