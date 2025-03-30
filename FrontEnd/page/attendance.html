@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>main</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <div class="navbar-header">
+    <!-- ปุ่มเปิด-ปิดเมนู -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+      <div class="logo"></div>
+      <ul>
+        <li><a href="index.html">🏠 Home</a></li>
+        <li><a href="attendance.html">📋 Attendance</a></li>
+        <li><a href="searchattendance.html">🔍 Search Attendance</a></li>
+        <li><a href="leave.html">📝 Leave Management</a></li>
+        <li><a href="searchleave.html">🔍 Search Leave</a></li>
+        <li><a href="addemployee.html">➕ Add Employee</a></li>
+        <li><a href="employeeslist.html">👥 Employees List</a></li>
+      </ul>
+    </div>
+
+    <div class="container-header">
+      <div class="header">
+        Attendance & Leave Management
+      </div>
+      <div class="container">
+        <div class="container-center">
+          <div class="head">
+            Check In/Out
+          </div>
+          <div class="midheader">
+            ⏰ Real-time Clock
+            <div class="clock">
+              <h2 id="clock"></h2>
+            </div>
+          </div>
+
+          <div class="button-container">
+
+            <div class="content-item">
+              <h2>Check In</h2>
+              <div class="form-input">
+                กรอกรหัสพนักงานเพื่อ Check-In
+                <input type="text" name="employeeID" placeholder="รหัสพนักงาน" required><br><br>
+              </div>
+              <p>กดเพื่อ Check-In</p>
+              <button class="check-in" onclick="Check_In_Data()">Check In</button>
+              <div id="messageIn" class="message"></div>
+            </div>
+
+            <div class="content-item">
+              <h2>Check Out</h2>
+              <div class="form-input">
+                กรอกรหัสพนักงานเพื่อ Check-Out
+                <input type="text" name="employeeIDD" placeholder="รหัสพนักงาน" required><br><br>
+              </div>
+              <p>กดปุ่มเพื่อ Check-Out</p>
+              <button class="check-out" onclick="Check_Out_Data()">Check Out</button>
+              <div id="messageOut" class="message"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="../script/attendance.js"></script>
+</body>
+
+</html>

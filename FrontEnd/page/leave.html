@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>main</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+  <div class="navbar-header">
+    <!-- ปุ่มเปิด-ปิดเมนู -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+      <div class="logo"></div>
+      <ul>
+        <li><a href="index.html">🏠 Home</a></li>
+        <li><a href="attendance.html">📋 Attendance</a></li>
+        <li><a href="searchattendance.html">🔍 Search Attendance</a></li>
+        <li><a href="leave.html">📝 Leave Management</a></li>
+        <li><a href="searchleave.html">🔍 Search Leave</a></li>
+        <li><a href="addemployee.html">➕ Add Employee</a></li>
+        <li><a href="employeeslist.html">👥 Employees List</a></li>
+      </ul>
+    </div>
+
+    <div class="container-header">
+      <div class="header">
+        Attendance & Leave Management
+      </div>
+      <div class="container">
+        <div class="box">
+          <div class="head">
+            Leave Management
+          </div>
+          <div class="flex form-input">
+            <div class="header-form">รหัสพนักงาน</div>
+            <input class="form" name="employeeID" type="number">
+          </div>
+          <div class="flex form-input">
+            <div class="header-form">รูปแบบการลางาน</div>
+            <select name="leave-type">
+              <option value="ลากิจ">📜 ลากิจ</option>
+              <option value="ลาป่วย">🚑 ลาป่วย</option>
+              <option value="ลาพักร้อน">🌴 ลาพักร้อน</option>
+              <option value="อื่นๆ">อื่น ๆ</option>
+            </select>
+          </div>
+          <div class="flex form-input">
+            <div class="header-form">📅 วันที่เริ่มลางาน</div>
+            <input class="form" name="start-date" type="date">
+          </div>
+          <div class="flex form-input">
+            <div class="header-form">📅 วันที่สิ้นสุดลางาน</div>
+            <input class="form" name="end-date" type="date">
+          </div>
+          <div class="flex form-input">
+            <div class="header-form">✏️ เหตุผลการลางาน</div>
+            <textarea class="form" name="leave-reason" rows="4" cols="50"></textarea>
+          </div>
+          <div class="center">
+            <button type="submit" onclick="submitLeaveData()">ส่งข้อมูล</button>
+          </div>
+          <div id = message class = "message"></div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="../script/leave.js"></script>
+</body>
+
+</html>

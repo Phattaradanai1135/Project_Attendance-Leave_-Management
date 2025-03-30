@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>main</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../../fontsawesome/css/fontawesome.min.css">
+  <link rel="stylesheet" href="../../fontsawesome/css/solid.css">
+  <link rel="stylesheet" href="../../fontsawesome/css/brands.min.css">
+</head>
+
+<body>
+  <div class="navbar-header">
+    <!-- ปุ่มเปิด-ปิดเมนู -->
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+      <div class="logo"></div>
+      <ul>
+        <li><a href="index.html">🏠 Home</a></li>
+        <li><a href="attendance.html">📋 Attendance</a></li>
+        <li><a href="searchattendance.html">🔍 Search Attendance</a></li>
+        <li><a href="leave.html">📝 Leave Management</a></li>
+        <li><a href="searchleave.html">🔍 Search Leave</a></li>
+        <li><a href="addemployee.html">➕ Add Employee</a></li>
+        <li><a href="employeeslist.html">👥 Employees List</a></li>
+      </ul>
+    </div>
+
+    <div class="container-header">
+      <div class="header">
+        Attendance & Leave Management
+      </div>
+      <div class="container">
+        <div class="head">
+          Search Attendance
+        </div>
+        <div class="flex form-input">
+          <input class="form" id="employeeID" placeholder="กรุณากรอกรหัสพนักงาน"></input>
+          <button onclick="searchingData()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div id = message class = "message"></div>
+        <div id="information" class="hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../script/searchattendance.js"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+</body>
+
+</html>
