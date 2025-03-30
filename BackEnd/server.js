@@ -289,9 +289,6 @@ app.post('/check_in', async (req, res) => {
     }
 });
 
-
-
-
 // path = POST /check_out สำหรับสร้าง check_out ใหม่บันทึกเข้าไป
 // path = POST /check_out ห้าม Check-out ถ้ายังไม่ได้ Check-in
 app.post('/check_out', async (req, res) => {
@@ -343,8 +340,6 @@ app.post('/check_out', async (req, res) => {
         res.status(500).json({ message: 'Something went wrong', error: error.message });
     }
 });
-
-
 
 // path = PUT /employees/:id สำหรับแก้ไข employee รายคน (ตาม id ที่บันทึกเข้าไป)
 app.put('/employees/:id', async (req, res) => {
