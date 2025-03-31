@@ -53,7 +53,6 @@ const Check_In_Data = async () => {
     employee_id: employee_idDOM.value.trim()
   };
 
-  // ✅ ตรวจสอบข้อมูลก่อนส่ง
   let errors = validateCheck_In_Data(Data_Check_In);
   if (errors.length > 0) {
     Swal.fire({
@@ -86,7 +85,7 @@ const Check_In_Data = async () => {
     Swal.fire({
       icon: "error",
       title: error.message,
-      html: errorMessage, // ใช้ html เพื่อรองรับ <br>
+      html: errorMessage,
     });
   }
 };
@@ -98,7 +97,6 @@ const Check_Out_Data = async () => {
     employee_id: employee_idDOM.value.trim()
   };
 
-  // ✅ ตรวจสอบก่อนส่ง
   if (!Data_Check_Out.employee_id) {
     Swal.fire({
       icon: "error",
@@ -130,7 +128,7 @@ const Check_Out_Data = async () => {
     Swal.fire({
       icon: "error",
       title: error.message,
-      html: errorMessage, // ใช้ html เพื่อรองรับ <br>
+      html: errorMessage,
     });
   }
 };

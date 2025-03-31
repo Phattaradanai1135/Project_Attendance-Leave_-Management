@@ -102,8 +102,6 @@ const submitLeaveData = async () => {
     let end_dateDOM = document.querySelector('input[name=end-date]');
     let descruiptionDOM = document.querySelector('textarea[name=leave-reason]');
 
-    let messageDOM = document.getElementById('message');
-
     try {
         let LeaveData = {
             employee_id: employee_idDOM.value,

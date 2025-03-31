@@ -87,8 +87,6 @@ const submitAddData = async () => {
   let lastNameDOM = document.querySelector('input[name=lastname]');
   let positionDOM = document.querySelector('input[name=position]');
 
-  let messageDOM = document.getElementById('message');
-
   try {
     let userData = {
       first_name: firstNameDOM.value,
