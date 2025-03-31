@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql_db:3306
--- Generation Time: Mar 30, 2025 at 03:57 PM
+-- Generation Time: Mar 31, 2025 at 10:41 AM
 -- Server version: 5.7.44
 -- PHP Version: 8.2.27
 
@@ -39,12 +39,19 @@ CREATE TABLE `attendance_records` (
 --
 
 INSERT INTO `attendance_records` (`attendance_id`, `employee_id`, `check_in_id`, `check_out_id`) VALUES
-(25, 6, 26, 24),
-(26, 6, 27, 25),
-(27, 6, 28, 26),
-(28, 6, 29, 27),
-(29, 6, 30, 28),
-(30, 6, 31, 29);
+(39, 7, 40, 38),
+(41, 7, 42, 40),
+(43, 7, 45, 42),
+(44, 6, 47, 44),
+(45, 7, 48, 43),
+(46, 6, 49, 48),
+(47, 7, 50, 47),
+(48, 9, 51, 45),
+(49, 10, 52, 46),
+(50, 6, 53, 49),
+(51, 6, 54, 50),
+(52, 6, 55, 51),
+(53, 7, 56, 52);
 
 -- --------------------------------------------------------
 
@@ -81,7 +88,30 @@ INSERT INTO `check_in` (`check_in_id`, `employee_id`, `check_in_date`, `check_in
 (28, 6, '2025-03-30', '12:57:20'),
 (29, 6, '2025-03-30', '15:46:34'),
 (30, 6, '2025-03-30', '15:46:37'),
-(31, 6, '2025-03-30', '15:46:39');
+(31, 6, '2025-03-30', '15:46:39'),
+(32, 6, '2025-03-30', '18:41:47'),
+(33, 7, '2025-03-30', '18:41:50'),
+(34, 6, '2025-03-30', '18:42:43'),
+(35, 6, '2025-03-30', '18:45:10'),
+(36, 6, '2025-03-30', '18:46:48'),
+(37, 6, '2025-03-30', '01:49:32'),
+(38, 6, '2025-03-31', '01:54:56'),
+(39, 6, '2025-03-31', '01:57:56'),
+(40, 7, '2025-03-31', '01:58:09'),
+(41, 6, '2025-03-31', '02:01:41'),
+(42, 7, '2025-03-31', '02:01:43'),
+(44, 6, '2025-03-31', '02:02:18'),
+(45, 7, '2025-03-31', '02:02:21'),
+(47, 6, '2025-03-31', '02:02:42'),
+(48, 7, '2025-03-31', '02:02:46'),
+(49, 6, '2025-03-31', '02:04:30'),
+(50, 7, '2025-03-31', '02:04:32'),
+(51, 9, '2025-03-31', '02:04:36'),
+(52, 10, '2025-03-31', '02:04:40'),
+(53, 6, '2025-03-31', '17:19:54'),
+(54, 6, '2025-03-31', '17:20:45'),
+(55, 6, '2025-03-31', '17:38:10'),
+(56, 7, '2025-03-31', '17:38:22');
 
 -- --------------------------------------------------------
 
@@ -118,7 +148,30 @@ INSERT INTO `check_out` (`check_out_id`, `employee_id`, `check_out_date`, `check
 (26, 6, '2025-03-30', '12:57:20'),
 (27, 6, '2025-03-30', '15:46:36'),
 (28, 6, '2025-03-30', '15:46:38'),
-(29, 6, '2025-03-30', '15:46:39');
+(29, 6, '2025-03-30', '15:46:39'),
+(30, 6, '2025-03-30', '18:42:01'),
+(31, 6, '2025-03-30', '18:42:44'),
+(32, 6, '2025-03-30', '18:45:11'),
+(33, 6, '2025-03-30', '18:46:49'),
+(34, 6, '2025-03-30', '01:50:47'),
+(35, 6, '2025-03-31', '01:54:56'),
+(36, 6, '2025-03-31', '01:58:04'),
+(37, 7, '2025-03-31', '01:58:07'),
+(38, 7, '2025-03-31', '01:58:10'),
+(39, 6, '2025-03-31', '02:01:52'),
+(40, 7, '2025-03-31', '02:01:55'),
+(41, 6, '2025-03-31', '02:02:28'),
+(42, 7, '2025-03-31', '02:02:31'),
+(43, 7, '2025-03-31', '02:02:49'),
+(44, 6, '2025-03-31', '02:02:53'),
+(45, 9, '2025-03-31', '02:04:43'),
+(46, 10, '2025-03-31', '02:04:47'),
+(47, 7, '2025-03-31', '02:04:50'),
+(48, 6, '2025-03-31', '02:04:54'),
+(49, 6, '2025-03-31', '17:20:05'),
+(50, 6, '2025-03-31', '17:20:51'),
+(51, 6, '2025-03-31', '17:38:13'),
+(52, 7, '2025-03-31', '17:38:26');
 
 -- --------------------------------------------------------
 
@@ -166,7 +219,7 @@ CREATE TABLE `leave_requests` (
 --
 
 INSERT INTO `leave_requests` (`leave_request_id`, `employee_id`, `leave_type`, `start_date`, `end_date`, `descruiption`) VALUES
-(1, 6, 'ลาป่วย', '2025-03-29', '2025-03-31', 'COVID-19'),
+(1, 6, 'ลาป่วย', '2025-03-28', '2025-03-30', 'COVID-19'),
 (2, 7, 'ลากิจ', '2025-03-30', '2025-03-03', 'ไปทำธุระที่ต่างจังหวัด'),
 (3, 6, 'ลาพักร้อน', '2025-04-03', '2025-04-04', 'ไปเที่ยว');
 
@@ -218,31 +271,31 @@ ALTER TABLE `leave_requests`
 -- AUTO_INCREMENT for table `attendance_records`
 --
 ALTER TABLE `attendance_records`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `check_in`
 --
 ALTER TABLE `check_in`
-  MODIFY `check_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `check_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `check_out`
 --
 ALTER TABLE `check_out`
-  MODIFY `check_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `check_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `leave_requests`
 --
 ALTER TABLE `leave_requests`
-  MODIFY `leave_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `leave_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
