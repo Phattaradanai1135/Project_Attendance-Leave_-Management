@@ -84,6 +84,18 @@ const searchingData = async () => {
         htmlData += '</div>';
         infoDetailDOM.innerHTML = htmlData;
 
+        document.querySelectorAll('.delete').forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                const id = event.target.dataset.id;
+                try {
+                    await axios.delete(`${BASE_URL}/leave_requests/${id}`);
+                    await searchingData();
+                } catch (error) {
+                    console.log('error', error);
+                }
+            });
+        });
+
     } catch (err) {
         message.classList.add('danger')
         message.classList.remove('succes')
