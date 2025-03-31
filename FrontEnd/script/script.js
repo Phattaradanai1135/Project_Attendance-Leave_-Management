@@ -106,36 +106,27 @@ const submitAddData = async () => {
       message = 'แก้ไขข้อมูลเรียบร้อย'
       console.log('response', response.data);
     }
-    messageDOM.innerText = message
-    messageDOM.className = 'message success'
-    setTimeout(() => {
-      messageDOM.innerText = '';
-      messageDOM.className = '';
-    }, 3000);
+    Swal.fire({
+      title: message,
+      icon: "success",
+      draggable: true
+    });
   } catch (error) {
     console.log('error message', error.message);
     console.log('error', error.errors);
 
     if (error.response) {
-      error.message = error.response.data.message
-      error.errors = error.response.data.errors
+        error.message = error.response.data.message
+        error.errors = error.response.data.errors
     }
 
-    let htmlData = '<div>'
-    htmlData += `<div> ${error.message} </div>`
-    htmlData += '<ul>'
-    for (let i = 0; i < error.errors.length; i++) {
-      htmlData += `<li> ${error.errors[i]} </li>`
-    }
-    htmlData += '</ul>'
-    htmlData += '</div>'
+    let errorMessage = error.errors.join('<br>');
 
-    messageDOM.innerHTML = htmlData
-    messageDOM.className = 'message danger'
-    setTimeout(() => {
-      messageDOM.innerText = '';
-      messageDOM.className = '';
-    }, 3000);
-  }
+    Swal.fire({
+        icon: "error",
+        title: error.message,
+        html: errorMessage,
+    });
+}
 }
 

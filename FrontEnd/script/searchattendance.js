@@ -25,82 +25,112 @@ document.addEventListener("DOMContentLoaded", function () {
     checkScreenSize();
 });
 
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = 'http://localhost:8000';
 
-let employeeidDOM = document.getElementById("employeeID")
-let message = document.getElementById("message")
-let infoDetailDOM = document.getElementById("information")
+let employeeidDOM = document.getElementById("employeeID");
+let infoDetailDOM = document.getElementById("information");
 
 const searchingData = async () => {
     try {
-        if (employeeidDOM.value == '') {
-            throw {
-                message: "ไม่ได้ใส่ข้อมูล"
-            };
+        if (employeeidDOM.value.trim() === '') {
+            Swal.fire({
+                icon: "warning",
+                title: "แจ้งเตือน",
+                text: "กรุณากรอกรหัสพนักงาน!",
+            });
+            return;
         }
 
         const response = await axios.get(`${BASE_URL}/attendance_records/${employeeidDOM.value}`);
         console.log("response", response.data);
 
-        message.classList.add('success');
-        message.classList.remove('danger');
-        message.classList.remove('hidden');
-
         infoDetailDOM.classList.remove("hidden");
 
         let htmlData = `
-                        <table id="tableheader">
-                        <tr>
-                            <th>attendance_id</th>
-                            <th>first_name</th>
-                            <th>last_name</th>
-                            <th>check_in_date</th>
-                            <th>check_in_time</th>
-                            <th>check_out_date</th>
-                            <th>check_out_time</th>
-                            <th>Delete</th>
-                        </tr>`;
+            <table id="tableheader">
+            <tr>
+                <th>attendance_id</th>
+                <th>first_name</th>
+                <th>last_name</th>
+                <th>check_in_date</th>
+                <th>check_in_time</th>
+                <th>check_out_date</th>
+                <th>check_out_time</th>
+                <th>Delete</th>
+            </tr>`;
 
-        for (let i = 0; i < response.data.length; i++) {
-            let employee = response.data[i];
+        for (let employee of response.data) {
             let formattedDate = new Date(employee.check_in_date).toLocaleDateString('th-TH');
             let formattedDate2 = new Date(employee.check_out_date).toLocaleDateString('th-TH');
+
             htmlData += `
-                        <table id="tablecustomers">
-                        <tr>
-                        <td data-label="attendance_id">${employee.attendance_id}</td> 
-                        <td data-label="first_name">${employee.first_name}</td> 
-                        <td data-label="last_name">${employee.last_name}</td> 
-                        <td data-label="check_in_date">${formattedDate}</td>
-                        <td data-label="check_in_time">${employee.check_in_time}</td>
-                        <td data-label="check_out_date">${formattedDate2}</td>
-                        <td data-label="check_out_time">${employee.check_out_time}</td>
-                        <td><button class='delete check-out' data-id='${employee.attendance_id}'>Delete</button></td>
-                        </tr>`;
+            <table id="tablecustommer">
+            <tr>
+                <td data-label="attendance_id">${employee.attendance_id}</td> 
+                <td data-label="first_name">${employee.first_name}</td> 
+                <td data-label="last_name">${employee.last_name}</td> 
+                <td data-label="check_in_date">${formattedDate}</td>
+                <td data-label="check_in_time">${employee.check_in_time}</td>
+                <td data-label="check_out_date">${formattedDate2}</td>
+                <td data-label="check_out_time">${employee.check_out_time}</td>
+                <td><button class='delete check-out' data-id='${employee.attendance_id}'>Delete</button></td>
+            </tr>`;
         }
-        message.innerHTML = "ค้นหารายการการลงเวลาเข้า-ออกสำเร็จ";
+
         htmlData += '</table>';
         infoDetailDOM.innerHTML = htmlData;
+
+        Swal.fire({
+            icon: "success",
+            title: "สำเร็จ!",
+            text: "ค้นหารายการการลงเวลาเข้า-ออกสำเร็จ",
+            showConfirmButton: false,
+            timer: 3000
+        });
 
         document.querySelectorAll('.delete').forEach((button) => {
             button.addEventListener('click', async (event) => {
                 const id = event.target.dataset.id;
-                try {
-                    await axios.delete(`${BASE_URL}/attendance_records/${id}`);
-                    await searchingData();
-                } catch (error) {
-                    console.log('error', error);
-                }
+
+                Swal.fire({
+                    title: "ยืนยันการลบ?",
+                    text: "คุณต้องการลบข้อมูลนี้ใช่หรือไม่?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "ลบข้อมูล",
+                    cancelButtonText: "ยกเลิก"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await axios.delete(`${BASE_URL}/attendance_records/${id}`);
+                            Swal.fire({
+                                icon: "success",
+                                title: "ลบข้อมูลสำเร็จ!",
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                            await searchingData();
+                        } catch (error) {
+                            console.log('error', error);
+                            Swal.fire({
+                                icon: "error",
+                                title: "เกิดข้อผิดพลาด",
+                                text: "ไม่สามารถลบข้อมูลได้",
+                            });
+                        }
+                    }
+                });
             });
         });
 
     } catch (err) {
-        message.classList.add('danger');
-        message.classList.remove('success');
-        message.classList.remove('hidden');
-
+        Swal.fire({
+            icon: "error",
+            title: "ไม่พบข้อมูล",
+            text: "ไม่พบรหัสพนักงานหรือไม่มีข้อมูล!",
+        });
         infoDetailDOM.classList.add('hidden');
-
-        message.innerHTML = 'ไม่พบรหัสพนักงาน';
     }
 };

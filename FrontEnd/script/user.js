@@ -25,34 +25,45 @@ document.addEventListener("DOMContentLoaded", function () {
     checkScreenSize();
 });
 
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = 'http://localhost:8000';
+
 window.onload = async () => {
-    await loadData()
+    await loadData();
 }
 
 const loadData = async () => {
-    console.log('user page loaded')
-    //1. load employee ทั้งหมด จาก api ที่เตรียมไว้
-    const response = await axios.get(`${BASE_URL}/employees`)
-    console.log(response.data)
+    try {
+        console.log('Loading employee data...');
 
-    const employeeDOM = document.getElementById('employee')
-    //2. นำ employee ทั้งหมด โหลดกลับเข้าไปใน html
+        const response = await axios.get(`${BASE_URL}/employees`);
+        console.log(response.data);
 
-    let htmlData = `
-        <table id="tableheader">
-          <tr>
-            <th>ID</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Position</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>`
-    for (let i = 0; i < response.data.length; i++) {
-        let employee = response.data[i]
-        htmlData += `
-        <table id="tablecustomers">
+        const employeeDOM = document.getElementById('employee');
+
+        if (response.data.length === 0) {
+            employeeDOM.innerHTML = "";
+            Swal.fire({
+                icon: "info",
+                title: "ไม่มีข้อมูล",
+                text: "ไม่พบข้อมูลพนักงานในระบบ",
+            });
+            return;
+        }
+
+        let htmlData = `
+            <table id="tableheader">
+            <tr>
+                <th>ID</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Position</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>`;
+
+        for (let employee of response.data) {
+            htmlData += `
+            <table id="tablecustommer">
             <tr>
                 <td data-label="ID">${employee.employee_id}</td> 
                 <td data-label="Firstname">${employee.first_name}</td> 
@@ -60,24 +71,70 @@ const loadData = async () => {
                 <td data-label="Position">${employee.position}</td>
                 <td><a href='editemployee.html?id=${employee.employee_id}'><button class='check-in'>Edit</button></a></td>
                 <td><button class='delete check-out' data-id='${employee.employee_id}'>Delete</button></td>
-            </tr>
-        </table>`
-    }
-    htmlData += '</div>'
-    employeeDOM.innerHTML = htmlData
+            </tr>`;
+        }
 
-    //3. ลบ user
-    const deleteDOM = document.getElementsByClassName('delete')
-    for (let i = 0; i < deleteDOM.length; i++) {
-        deleteDOM[i].addEventListener('click', async (event) => {
-            //ดึง id ของ user ที่ต้องการลบ
-            const id = event.target.dataset.id
-            try {
-                await axios.delete(`${BASE_URL}/employees/${id}`)
-                loadData() //recursive function = เรียกใช้ฟังก์ชั่น ตัวเอง
-            } catch (error) {
-                console.log('error', error)
-            }
-        })
+        htmlData += `</table>`;
+        employeeDOM.innerHTML = htmlData;
+
+        document.querySelectorAll('.delete').forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                const id = event.target.dataset.id;
+
+                Swal.fire({
+                    title: "ยืนยันการลบ?",
+                    text: "คุณต้องการลบพนักงานคนนี้ใช่หรือไม่?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "ลบข้อมูล",
+                    cancelButtonText: "ยกเลิก"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await axios.delete(`${BASE_URL}/employees/${id}`);
+
+                            const newResponse = await axios.get(`${BASE_URL}/employees`);
+                            if (newResponse.data.length === 0) {
+                                employeeDOM.innerHTML = "";
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "ลบเสร็จสิ้น!",
+                                    text: "ไม่มีข้อมูลพนักงานเหลืออยู่",
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "ลบข้อมูลสำเร็จ!",
+                                    text: "อัปเดตรายการที่เหลือ",
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+
+                                await loadData();
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: "error",
+                                title: "เกิดข้อผิดพลาด",
+                                text: "ไม่สามารถลบข้อมูลได้",
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด",
+            text: "ไม่สามารถโหลดข้อมูลพนักงานได้",
+        });
     }
-}
+};

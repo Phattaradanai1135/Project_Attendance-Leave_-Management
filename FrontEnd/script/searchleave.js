@@ -25,84 +25,138 @@ document.addEventListener("DOMContentLoaded", function () {
     checkScreenSize();
 });
 
-const BASE_URL = 'http://localhost:8000'
+const BASE_URL = 'http://localhost:8000';
 
-let employeeidDOM = document.getElementById("employeeID")
-let message = document.getElementById("message")
-let infoDetailDOM = document.getElementById("information")
+let employeeidDOM = document.getElementById("employeeID");
+let infoDetailDOM = document.getElementById("information");
 
 const searchingData = async () => {
-
     try {
-
-        if (employeeidDOM.value == '') {
-            throw {
-                message: "ไม่ได้ใส่ข้อมูล"
-            }
+        if (employeeidDOM.value.trim() === '') {
+            Swal.fire({
+                icon: "warning",
+                title: "แจ้งเตือน",
+                text: "กรุณากรอกรหัสพนักงาน!",
+            });
+            return;
         }
 
-        const response = await axios.get(`${BASE_URL}/leave_requests_employees/${employeeidDOM.value}`)
+        const response = await axios.get(`${BASE_URL}/leave_requests_employees/${employeeidDOM.value}`);
         console.log("response", response.data);
 
-        message.classList.add('success')
-        message.classList.remove('danger')
-        message.classList.remove('hidden')
+        if (response.data.length === 0) {
+            infoDetailDOM.classList.add("hidden");
+            Swal.fire({
+                icon: "error",
+                title: "ไม่พบข้อมูล",
+                text: "ไม่มีรายการใบลางานสำหรับพนักงานนี้!",
+            });
+            return;
+        }
 
-        infoDetailDOM.classList.remove("hidden")
+        infoDetailDOM.classList.remove("hidden");
 
-        let htmlData = `<table id="tableheader">
-                        <tr>
-                            <th>ID</th>
-                            <th>employee_id</th>
-                            <th>leave_type</th>
-                            <th>start_date</th>
-                            <th>end_date</th>
-                            <th>descruiption</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>`
-        for (let i = 0; i < response.data.length; i++) {
-            let employee = response.data[i]
+        let htmlData = `
+            <table id="tableheader">
+            <tr>
+                <th>ID</th>
+                <th>employee_id</th>
+                <th>leave_type</th>
+                <th>start_date</th>
+                <th>end_date</th>
+                <th>description</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>`;
+
+        for (let employee of response.data) {
             let formattedDate = new Date(employee.start_date).toLocaleDateString('th-TH');
             let formattedDate2 = new Date(employee.end_date).toLocaleDateString('th-TH');
+
             htmlData += `
-                        <table id="tablecustomers">
-                        <tr>
-                        <td data-label="ID">${employee.leave_request_id}</td> 
-                        <td data-label="employee_id">${employee.employee_id}</td> 
-                        <td data-label="leave_type">${employee.leave_type}</td> 
-                        <td data-label="start_date">${formattedDate}</td>
-                        <td data-label="end_date">${formattedDate2}</td>
-                        <td data-label="descruiption">${employee.descruiption}</td>
-                        <td><a href='editleave.html?id=${employee.leave_request_id}'><button class = 'check-in'>Edit</button></a></td>
-                        <td><button class = 'check-out delete' data-id = '${employee.leave_request_id}'>Delete</button></td>
-                        </tr>
-                        </table>
-                        </div>`
+            <table id="tablecustommer">
+            <tr>
+                <td data-label="ID">${employee.leave_request_id}</td> 
+                <td data-label="employee_id">${employee.employee_id}</td> 
+                <td data-label="leave_type">${employee.leave_type}</td> 
+                <td data-label="start_date">${formattedDate}</td>
+                <td data-label="end_date">${formattedDate2}</td>
+                <td data-label="description">${employee.descruiption}</td>
+                <td><a href='editleave.html?id=${employee.leave_request_id}'><button class='check-in'>Edit</button></a></td>
+                <td><button class='check-out delete' data-id='${employee.leave_request_id}'>Delete</button></td>
+            </tr>`;
         }
-        message.innerHTML = "ค้นหารายการใบลางานสำเร็จ";
-        htmlData += '</div>';
+
+        htmlData += '</table>';
         infoDetailDOM.innerHTML = htmlData;
+
+        Swal.fire({
+            icon: "success",
+            title: "ค้นหาสำเร็จ!",
+            text: "พบรายการใบลางานของพนักงาน",
+            showConfirmButton: false,
+            timer: 3000
+        });
 
         document.querySelectorAll('.delete').forEach((button) => {
             button.addEventListener('click', async (event) => {
                 const id = event.target.dataset.id;
-                try {
-                    await axios.delete(`${BASE_URL}/leave_requests/${id}`);
-                    await searchingData();
-                } catch (error) {
-                    console.log('error', error);
-                }
+
+                Swal.fire({
+                    title: "ยืนยันการลบ?",
+                    text: "คุณต้องการลบใบลางานนี้ใช่หรือไม่?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "ลบข้อมูล",
+                    cancelButtonText: "ยกเลิก"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            await axios.delete(`${BASE_URL}/leave_requests/${id}`);
+                            const newResponse = await axios.get(`${BASE_URL}/leave_requests_employees/${employeeidDOM.value}`);
+
+                            if (newResponse.data.length === 0) {
+                                infoDetailDOM.classList.add("hidden");
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "ลบเสร็จสิ้น!",
+                                    text: "ไม่มีข้อมูลใบลางานเหลืออยู่",
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "ลบข้อมูลสำเร็จ!",
+                                    text: "อัปเดตรายการที่เหลือ",
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+
+                                await searchingData();
+                            }
+                        } catch (error) {
+                            console.log('error', error);
+                            Swal.fire({
+                                icon: "error",
+                                title: "เกิดข้อผิดพลาด",
+                                text: "ไม่สามารถลบข้อมูลได้",
+                            });
+                        }
+                    }
+                });
             });
         });
 
     } catch (err) {
-        message.classList.add('danger')
-        message.classList.remove('succes')
-        message.classList.remove('hidden')
+        Swal.fire({
+            icon: "error",
+            title: "ไม่พบข้อมูล",
+            text: "ไม่พบรหัสพนักงานหรือไม่มีข้อมูล!",
+        });
 
-        infoDetailDOM.classList.add('hidden')
-
-        message.innerHTML = 'ไม่พบรหัสพนักงาน'
+        infoDetailDOM.classList.add('hidden');
     }
-}
+};
