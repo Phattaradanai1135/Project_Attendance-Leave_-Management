@@ -83,7 +83,7 @@ body {
 .header {
   position: sticky;
   height: 70px;
-  background-color: #00d4fa;
+  background-color: #0094D9;
   color: white;
   display: flex;
   justify-content: flex-end;
@@ -328,7 +328,8 @@ th,td {
 }
 
 #table-row:hover{
-  background-color: #00d4fa;
+  background-color: #0094D9;
+  color: #fff;
 }
 
 /* Logout */
