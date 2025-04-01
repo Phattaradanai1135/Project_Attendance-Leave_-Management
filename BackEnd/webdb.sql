@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql_db:3306
--- Generation Time: Mar 31, 2025 at 10:41 AM
+-- Generation Time: Apr 01, 2025 at 06:09 AM
 -- Server version: 5.7.44
 -- PHP Version: 8.2.27
 
@@ -51,7 +51,8 @@ INSERT INTO `attendance_records` (`attendance_id`, `employee_id`, `check_in_id`,
 (50, 6, 53, 49),
 (51, 6, 54, 50),
 (52, 6, 55, 51),
-(53, 7, 56, 52);
+(53, 7, 56, 52),
+(54, 6, 57, 53);
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,8 @@ INSERT INTO `check_in` (`check_in_id`, `employee_id`, `check_in_date`, `check_in
 (53, 6, '2025-03-31', '17:19:54'),
 (54, 6, '2025-03-31', '17:20:45'),
 (55, 6, '2025-03-31', '17:38:10'),
-(56, 7, '2025-03-31', '17:38:22');
+(56, 7, '2025-03-31', '17:38:22'),
+(57, 6, '2025-04-01', '13:08:40');
 
 -- --------------------------------------------------------
 
@@ -171,7 +173,8 @@ INSERT INTO `check_out` (`check_out_id`, `employee_id`, `check_out_date`, `check
 (49, 6, '2025-03-31', '17:20:05'),
 (50, 6, '2025-03-31', '17:20:51'),
 (51, 6, '2025-03-31', '17:38:13'),
-(52, 7, '2025-03-31', '17:38:26');
+(52, 7, '2025-03-31', '17:38:26'),
+(53, 6, '2025-04-01', '13:08:44');
 
 -- --------------------------------------------------------
 
@@ -271,19 +274,19 @@ ALTER TABLE `leave_requests`
 -- AUTO_INCREMENT for table `attendance_records`
 --
 ALTER TABLE `attendance_records`
-  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `check_in`
 --
 ALTER TABLE `check_in`
-  MODIFY `check_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `check_in_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `check_out`
 --
 ALTER TABLE `check_out`
-  MODIFY `check_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `check_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `employees`
@@ -295,7 +298,7 @@ ALTER TABLE `employees`
 -- AUTO_INCREMENT for table `leave_requests`
 --
 ALTER TABLE `leave_requests`
-  MODIFY `leave_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `leave_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

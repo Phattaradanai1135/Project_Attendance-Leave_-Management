@@ -57,8 +57,8 @@ const searchingData = async () => {
         infoDetailDOM.classList.remove("hidden");
 
         let htmlData = `
-            <table id="tableheader">
-            <tr>
+            <table>
+            <tr id="table-header">
                 <th>ID</th>
                 <th>employee_id</th>
                 <th>leave_type</th>
@@ -74,8 +74,7 @@ const searchingData = async () => {
             let formattedDate2 = new Date(employee.end_date).toLocaleDateString('th-TH');
 
             htmlData += `
-            <table id="tablecustommer">
-            <tr>
+            <tr id="table-row">
                 <td data-label="ID">${employee.leave_request_id}</td> 
                 <td data-label="employee_id">${employee.employee_id}</td> 
                 <td data-label="leave_type">${employee.leave_type}</td> 

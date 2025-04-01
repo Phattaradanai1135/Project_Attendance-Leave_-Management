@@ -1,7 +1,12 @@
+@font-face{
+  font-family: "Kanit-regular";
+  src: url("../font_kanit/Kanit-Regular.ttf") format("truetype");
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "Kanit-regular", sans-serif;
   background-color: #f4f4f4;
 }
 
@@ -300,7 +305,7 @@ table {
   padding: 10px;
   table-layout: fixed;
   width: 100%;
-  border: 1px solid black;
+  border: 2px solid black;
   border-collapse: collapse;
   margin-top: 10px;
 }
@@ -308,18 +313,21 @@ table {
 th,td {
   padding: 10px;
   text-align: center;
-  border-radius: 10px;
+  border: 2px solid black;
   border-collapse: collapse;
   min-width: 120px;
   white-space: nowrap;
 }
 
-#tablecustomers:hover {
-  background-color: #87CEEB;
+#table-header {
+  background-color: #001aff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
 }
 
-#tableheader {
-  background-color: #FFC0CB;
+#table-row:hover{
+  background-color: #00d4fa;
 }
 
 /* Logout */
