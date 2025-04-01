@@ -81,6 +81,7 @@ body {
 
 /* Header */
 .header {
+  position: sticky;
   height: 70px;
   background-color: #00d4fa;
   color: white;
