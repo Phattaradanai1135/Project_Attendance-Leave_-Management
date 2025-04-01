@@ -59,12 +59,12 @@ const searchingData = async () => {
         let htmlData = `
             <table>
             <tr id="table-header">
-                <th>ID</th>
-                <th>employee_id</th>
-                <th>leave_type</th>
-                <th>start_date</th>
-                <th>end_date</th>
-                <th>description</th>
+                <th>Leave_Id</th>
+                <th>Employee_Id</th>
+                <th>Leave_Type</th>
+                <th>Start_Date</th>
+                <th>End_Date</th>
+                <th>Description</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>`;
@@ -75,12 +75,12 @@ const searchingData = async () => {
 
             htmlData += `
             <tr id="table-row">
-                <td data-label="ID">${employee.leave_request_id}</td> 
-                <td data-label="employee_id">${employee.employee_id}</td> 
-                <td data-label="leave_type">${employee.leave_type}</td> 
-                <td data-label="start_date">${formattedDate}</td>
-                <td data-label="end_date">${formattedDate2}</td>
-                <td data-label="description">${employee.descruiption}</td>
+                <td data-label="Leave_Id">${employee.leave_request_id}</td> 
+                <td data-label="Employee_Id">${employee.employee_id}</td> 
+                <td data-label="Leave_Type">${employee.leave_type}</td> 
+                <td data-label="Start_Date">${formattedDate}</td>
+                <td data-label="End_Date">${formattedDate2}</td>
+                <td data-label="Description">${employee.descruiption}</td>
                 <td><a href='editleave.html?id=${employee.leave_request_id}'><button class='check-in'>Edit</button></a></td>
                 <td><button class='check-out delete' data-id='${employee.leave_request_id}'>Delete</button></td>
             </tr>`;

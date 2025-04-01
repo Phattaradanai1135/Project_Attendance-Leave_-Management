@@ -53,7 +53,7 @@ const loadData = async () => {
         let htmlData = `
             <table>
             <tr id="table-header">
-                <th>ID</th>
+                <th>Id</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Position</th>
@@ -64,7 +64,7 @@ const loadData = async () => {
         for (let employee of response.data) {
             htmlData += `
             <tr id="table-row">
-                <td data-label="ID">${employee.employee_id}</td> 
+                <td data-label="Id">${employee.employee_id}</td> 
                 <td data-label="Firstname">${employee.first_name}</td> 
                 <td data-label="Lastname">${employee.last_name}</td> 
                 <td data-label="Position">${employee.position}</td>

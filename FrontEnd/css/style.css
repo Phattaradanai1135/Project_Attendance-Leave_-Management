@@ -305,7 +305,7 @@ table {
   padding: 10px;
   table-layout: fixed;
   width: 100%;
-  border: 2px solid black;
+  border: 2px solid #000;
   border-collapse: collapse;
   margin-top: 10px;
 }
@@ -313,17 +313,25 @@ table {
 th,td {
   padding: 10px;
   text-align: center;
-  border: 2px solid black;
+  border-bottom: #000 solid 2px;
   border-collapse: collapse;
   min-width: 120px;
   white-space: nowrap;
+}
+
+tr:nth-child(odd) {
+  background-color: #c2c2c2b4;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
 #table-header {
   background-color: #001aff;
   color: #fff;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 #table-row:hover{

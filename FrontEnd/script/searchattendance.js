@@ -49,13 +49,13 @@ const searchingData = async () => {
         let htmlData = `
             <table>
             <tr id="table-header">
-                <th>attendance_id</th>
-                <th>first_name</th>
-                <th>last_name</th>
-                <th>check_in_date</th>
-                <th>check_in_time</th>
-                <th>check_out_date</th>
-                <th>check_out_time</th>
+                <th>Attendance_Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Check_In_Date</th>
+                <th>Check_In_Time</th>
+                <th>Check_Out_Date</th>
+                <th>Check_Out_Time</th>
                 <th>Delete</th>
             </tr>`;
 
@@ -65,13 +65,13 @@ const searchingData = async () => {
 
             htmlData += `
             <tr id="table-row">
-                <td data-label="attendance_id">${employee.attendance_id}</td> 
-                <td data-label="first_name">${employee.first_name}</td> 
-                <td data-label="last_name">${employee.last_name}</td> 
-                <td data-label="check_in_date">${formattedDate}</td>
-                <td data-label="check_in_time">${employee.check_in_time}</td>
-                <td data-label="check_out_date">${formattedDate2}</td>
-                <td data-label="check_out_time">${employee.check_out_time}</td>
+                <td data-label="Attendance_Id">${employee.attendance_id}</td> 
+                <td data-label="Firstname">${employee.first_name}</td> 
+                <td data-label="Lastname">${employee.last_name}</td> 
+                <td data-label="Check_In_Date">${formattedDate}</td>
+                <td data-label="Check_In_Time">${employee.check_in_time}</td>
+                <td data-label="Check_Out_Date">${formattedDate2}</td>
+                <td data-label="Check_Out_Time">${employee.check_out_time}</td>
                 <td><button class='delete check-out' data-id='${employee.attendance_id}'>Delete</button></td>
             </tr>`;
         }
