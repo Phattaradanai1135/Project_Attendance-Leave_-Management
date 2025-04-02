@@ -102,7 +102,7 @@ body {
 
 .container {
   max-width: 1400px;
-  height: 700px;
+  height: 100%;
   margin: 50px auto;
   background: white;
   padding: 20px;
